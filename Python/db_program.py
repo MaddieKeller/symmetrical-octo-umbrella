@@ -3,6 +3,19 @@ import sqlite3
 #connect to the database
 conn = sqlite3.connect('simpsons.db')
 
+def dupCheck(name):
+    #check for duplicates
+    sql_str = "SELECT * from Simpson_info where NAME='{}'".format(name)
+    cursor = conn.execute(sql_str)
+    rows = cursor.fetchall()
+    if len(rows)>0:
+        print 'This character already exists.'
+        return True
+    else:
+        return False
+
+
+
 def createTable ():
     conn.execute("CREATE TABLE if not exists Simpson_info( \
     ID INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -21,24 +34,14 @@ def printData(data):
 
 def newCharacters(name, gender, age, occupation):
     print'\nAdding a new character...'
-
-    #check for duplicates
-    sql_str = "SELECT * from Simpson_info where NAME='{}'".format(name)
-    cursor = conn.execute(sql_str)
-    rows = cursor.fetchall()
-    if len(rows)>0:
-        print 'This character already exists.'
-
-    else:
-        #create a string with all the raw input
-        val_str = "'{}','{}',{},'{}'".format(name, gender, age, occupation)
-
-        #update the table with the raw input
-        execString='INSERT INTO Simpson_info (NAME, GENDER, AGE, OCCUPATION) values ({});'.format(val_str)
-        print execString
-        conn.execute(execString)
-        conn.commit()
-        return conn.total_changes
+    #create a string with all the raw input
+    val_str = "'{}','{}',{},'{}'".format(name, gender, age, occupation)
+    #update the table with the raw input
+    execString='INSERT INTO Simpson_info (NAME, GENDER, AGE, OCCUPATION) values ({});'.format(val_str)
+    print execString
+    conn.execute(execString)
+    conn.commit()
+    return conn.total_changes
 
 def viewAll():
     #create a sql string

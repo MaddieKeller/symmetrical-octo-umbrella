@@ -20,7 +20,7 @@ class Frame(wx.Frame):
         #New Character Section
         wx.StaticBox(panel, \
                       label="Add a New Character", \
-                      size=(280,190), \
+                      size=(280,260), \
                       pos=(20,40))
         wx.StaticText(panel, \
                       label="Name:", \
@@ -30,26 +30,28 @@ class Frame(wx.Frame):
                       pos=(30,110))
         wx.StaticText(panel, \
                       label="Age:", \
-                      pos=(30,150))
+                      pos=(30,170))
         wx.StaticText(panel, \
                       label="Occupation:", \
-                      pos=(30,190))
+                      pos=(30,210))
         self.charName = wx.TextCtrl(panel, \
                     size=(150,-1), \
                     pos=(130,70))
-        self.charGen = wx.TextCtrl(panel, \
-                    size=(150,-1), \
+        #self.charGen = wx.TextCtrl(panel, size=(150,-1), pos=(130,110))
+        self.charGenF = wx.CheckBox(panel, \
+                    label="Female", \
                     pos=(130,110))
+        self.charGenM = wx.CheckBox(panel, label="Male", pos=(130,140))
         self.charAge = wx.SpinCtrl(panel, \
                     value='0', \
                     size=(70,25), \
-                    pos=(130,150))
+                    pos=(130,170))
         self.charOcc = wx.TextCtrl(panel, \
                     size=(150,-1), \
-                    pos=(130,190))
+                    pos=(130,210))
 
         #new Character Button
-        saveButton = wx.Button(panel, label="Add Character", pos=(100,230))
+        saveButton = wx.Button(panel, label="Add Character", pos=(100,250))
         saveButton.Bind(wx.EVT_BUTTON, self.addCharacter)  #Bind button to New Character function from db_program
 
         #Table setup
@@ -60,16 +62,21 @@ class Frame(wx.Frame):
         self.listCnt.InsertColumn(3,"Age")
         self.listCnt.InsertColumn(4,"Occupation")
         self.fillListCnt()
-        self.listCnt.Bind(wx.EVT_LIST_ITEM_SELECTED,self.onSelect)
+        self.listCnt.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onSelect)
 
         deleteBtn = wx.Button(panel, label="Delete Character", pos=(510,460))
+        deleteBtn.Bind(wx.EVT_BUTTON, self.onDelete)
 
     def onSelect(self, event):
-        print event.GetText()
+       self.selectedID = event.GetText()
 
     def addCharacter(self, event):
         name = self.charName.GetValue()
-        gender = self.charGen.GetValue()
+        if (self.charGenF == True):
+            gender = "Female"
+        else:
+            gender = "Male"
+        #gender = self.charGen.GetValue()
         age = self.charAge.GetValue()
         occupation = self.charOcc.GetValue()
 
@@ -79,9 +86,16 @@ class Frame(wx.Frame):
             dlg.Destroy()
             return False
 
+        if db_program.dupCheck(name):
+            dlg = wx.MessageDialog(None, 'This character is a duplicate. Please check the database and try again.', 'Duplicate Error', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+            return False
+
         db_program.newCharacters(name,gender,age,occupation)
         self.charName.Clear()
-        self.charGen.Clear()
+        self.charGenF.SetValue(False)
+        self.charGenM.SetValue(False)
         self.charAge.SetValue(0)
         self.charOcc.Clear()
         self.fillListCnt()
@@ -92,6 +106,12 @@ class Frame(wx.Frame):
         for row in allData:
             self.listCnt.Append(row)
 
+    def onDelete(self, event):
+        db_program.deleteCharacter(self.selectedID)
+        self.fillListCnt()
+        dlg = wx.MessageDialog(None,'Character has been deleted.', 'Delete Complete', wx.OK)
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def exitProgram(self, Event):
         self.Destroy()
