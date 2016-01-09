@@ -1,8 +1,8 @@
 ﻿
-body { 
+body {
 }
 
-nav{
+nav {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -13,34 +13,32 @@ nav{
     text-align: right;
 }
 
-nav h2{
-    text-align: left;
-    padding-left: 10px;
-    float: left;
-    color: white;
-}
+    nav h2 {
+        text-align: left;
+        padding-left: 10px;
+        float: left;
+        color: white;
+    }
 
-li{
-    text-align:right;
+li {
+    text-align: right;
     padding-right: 10px;
     display: inline;
     margin: 5px;
 }
 
-li a{
-    color: white;
-    text-decoration: none;
-    word-spacing: 2px;
-    text-transform: uppercase;
-    border-radius: 5px;
-    padding: 10px;
-}
+    li a {
+        color: white;
+        text-decoration: none;
+        word-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-li a:hover{
-    
-    background-color: #b2652f;
-
-}
+        li a:hover {
+            background-color: #b2652f;
+        }
 
 header {
     position: relative;
@@ -52,11 +50,11 @@ header {
     height: 500px;
 }
 
-header h1{
-    color: white;
-    text-align: center;
-    padding-top: 200px;
-}
+    header h1 {
+        color: white;
+        text-align: center;
+        padding-top: 200px;
+    }
 
 main {
     position: relative;
