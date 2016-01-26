@@ -18,36 +18,36 @@ class Frame(wx.Frame):
         self.CreateStatusBar()
 
         #New Character Section
-        wx.StaticBox(panel, \
-                      label="Add a New Character", \
-                      size=(280,260), \
+        wx.StaticBox(panel,
+                      label="Add a New Character",
+                      size=(280,260),
                       pos=(20,40))
-        wx.StaticText(panel, \
-                      label="Name:", \
+        wx.StaticText(panel,
+                      label="Name:",
                       pos=(30,70))
-        wx.StaticText(panel, \
-                      label="Gender:", \
+        wx.StaticText(panel,
+                      label="Gender:",
                       pos=(30,110))
-        wx.StaticText(panel, \
-                      label="Age:", \
+        wx.StaticText(panel,
+                      label="Age:",
                       pos=(30,170))
-        wx.StaticText(panel, \
-                      label="Occupation:", \
+        wx.StaticText(panel,
+                      label="Occupation:",
                       pos=(30,210))
-        self.charName = wx.TextCtrl(panel, \
-                    size=(150,-1), \
+        self.charName = wx.TextCtrl(panel,
+                    size=(150,-1),
                     pos=(130,70))
         #self.charGen = wx.TextCtrl(panel, size=(150,-1), pos=(130,110))
-        self.charGenF = wx.CheckBox(panel, \
-                    label="Female", \
+        self.charGenF = wx.CheckBox(panel,
+                    label="Female",
                     pos=(130,110))
         self.charGenM = wx.CheckBox(panel, label="Male", pos=(130,140))
-        self.charAge = wx.SpinCtrl(panel, \
-                    value='0', \
-                    size=(70,25), \
+        self.charAge = wx.SpinCtrl(panel,
+                    value='0',
+                    size=(70,25),
                     pos=(130,170))
-        self.charOcc = wx.TextCtrl(panel, \
-                    size=(150,-1), \
+        self.charOcc = wx.TextCtrl(panel,
+                    size=(150,-1),
                     pos=(130,210))
 
         #new Character Button
