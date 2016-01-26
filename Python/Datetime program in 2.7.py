@@ -11,37 +11,50 @@ import pytz
                 branches are open or closed
 '''
 
-def londonOffice():
-    pass
+def convertHour(time):
+        if time.strftime('%H')<12:
+            return (time.strftime('%H:%M')+" AM")
+        else:
+            time=time-timedelta(hours=12)
+            return (time.strftime('%H:%M')+ " PM")
 
-def nycOffice():
-    pass
+def londonOffice(time):
+    fmt = "%H:%M:%S"
+    houropen = '09:00:00'
+    hourclose = '21:00:00'
+    if time.strftime(fmt) >= houropen and time.strftime(fmt) <=hourclose:
+        print("The London office is open. It is "+ convertHour(time) + " in London." )
+    else:
+        print("The London office is closed. It is "+ convertHour(time) +" in London.")
+
+def nycOffice(time):
+    fmt = "%H:%M:%S"
+    houropen = '09:00:00'
+    hourclose = '21:00:00'
+    if time.strftime(fmt) >= houropen and time.strftime(fmt) <=hourclose:
+        print("The New York City office is open. It is "+ convertHour(time) +" in New York City.")
+    else:
+        print("The New York City office is closed. It is "+ convertHour(time) + " in New York City.")
 
 def main():
 
     #Set the timezones
     utc = pytz.utc
-    westernEuro = timezone('Europe/London') #London is Western Europe UTC-0
-    easternUs = timezone('US/Eastern') #NYC is Eastern Time Zone UTC-5
-    pacificUs = timezone('US/Pacific') #Portland is Pacific Time Zone UTC-8
+    london_tz = timezone('Europe/London') #London is Western Europe UTC-0
+    nyc_tz = timezone('US/Eastern') #NYC is Eastern Time Zone UTC-5
+    portland_tz = timezone('US/Pacific') #Portland is Pacific Time Zone UTC-8
 
     #set the time format
     fmt = '%H:%M:%S %Z%z'
 
-    #localize the current time to the three offices
-    portland_dt = pacificUs.localize(datetime.now())
-    london_dt = westernEuro.localize(datetime.now())
-    nyc_dt = pacificUs.localize(datetime.now())
+    #localize the current time to the three offices and normalize to take care of daylight savings
 
-    #normalize the current time to the three offices. This is to take care of daylight savings time differences
-    portland_nmdt = pacificUs.normalize(portland_dt).strftime(fmt)
-    london_nmdt = westernEuro.normalize(london_dt).strftime(fmt)
-    nyc_nmdt = easternUs.normalize(nyc_dt).strftime(fmt)
+    portland_dt = portland_tz.localize(datetime.now())
+    london_dt = london_tz.normalize(portland_dt.astimezone(london_tz))
+    nyc_dt = nyc_tz.normalize(portland_dt.astimezone(nyc_tz))
 
-
-
-    print("The Portland office is "+ portland_dt.strftime(fmt))
-    print("The London office is " + london_dt.strftime(fmt))
-    print("The NYC offic is " + nyc_dt.strftime(fmt))
+    print("In Portland it is "+ convertHour(portland_dt)+".")
+    londonOffice(london_dt)
+    nycOffice(nyc_dt)
 
 if __name__ == '__main__': main()
