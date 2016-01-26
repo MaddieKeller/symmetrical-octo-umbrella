@@ -18,23 +18,14 @@ def convertHour(time):
             time=time-timedelta(hours=12)
             return (time.strftime('%H:%M')+ " PM")
 
-def londonOffice(time):
+def officeHours(time,office):
     fmt = "%H:%M:%S"
     houropen = '09:00:00'
     hourclose = '21:00:00'
     if time.strftime(fmt) >= houropen and time.strftime(fmt) <=hourclose:
-        print("The London office is open. It is "+ convertHour(time) + " in London." )
+        print("The "+ office +" office is open. It is "+ convertHour(time) +" in " +office +".")
     else:
-        print("The London office is closed. It is "+ convertHour(time) +" in London.")
-
-def nycOffice(time):
-    fmt = "%H:%M:%S"
-    houropen = '09:00:00'
-    hourclose = '21:00:00'
-    if time.strftime(fmt) >= houropen and time.strftime(fmt) <=hourclose:
-        print("The New York City office is open. It is "+ convertHour(time) +" in New York City.")
-    else:
-        print("The New York City office is closed. It is "+ convertHour(time) + " in New York City.")
+        print("The "+office+" office is closed. It is "+ convertHour(time) + " in "+office+".")
 
 def main():
 
@@ -54,7 +45,8 @@ def main():
     nyc_dt = nyc_tz.normalize(portland_dt.astimezone(nyc_tz))
 
     print("In Portland it is "+ convertHour(portland_dt)+".")
-    londonOffice(london_dt)
-    nycOffice(nyc_dt)
+    officeHours(portland_dt,'Portland')
+    officeHours(london_dt,'London')
+    officeHours(nyc_dt,'New York City')
 
 if __name__ == '__main__': main()
