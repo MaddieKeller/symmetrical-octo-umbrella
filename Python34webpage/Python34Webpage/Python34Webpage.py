@@ -16,8 +16,8 @@ def makeWindow():
     frame = Frame()
 
     #setup the text entry
-    Label(frame, text = "Enter the body text for the web page").grid(row = 0, column = 0, columnspan = 5, sticky = 'nsew')
-    bodyText = Text(frame,height = 5, width = 50, wrap = WORD)
+    label = Label(frame, text = "Enter the body text for the web page").grid(row = 0, column = 0, columnspan = 5, sticky = 'nsew')
+    bodyText = Text(frame, wrap = WORD)
     bodyScroll = Scrollbar(frame,orient = VERTICAL)
     bodyText.config(yscrollcommand = bodyScroll.set)
     bodyScroll['command']=bodyText.yview()
@@ -27,7 +27,8 @@ def makeWindow():
     bodyScroll.grid(row = 1, column = 4, sticky = 'nsew')
     submit.grid(row = 2, column = 1)
     frame.pack(expand = True, fill = 'both')
-
+    frame.grid_rowconfigure(0, weight = 1)
+    frame.grid_columnconfigure(0, weight = 1) 
    
     listBox = MultiColumnListbox()
     return win
@@ -56,10 +57,11 @@ class MultiColumnListbox(object):
         self._build_tree()
 
     def callback(self, event):
-        selectLine = self.tree.selection()
+        selectLine = self.tree.item(self.tree.selection())
+        selection = selectLine['values']
         bodyText.delete(1.0,END)
-        print(selectLine)
-        #bodyText.insert(1.0, selectLine)
+        print(selection[2])
+        bodyText.insert(1.0,selection[2])
 
     def _setup_widgets(self):
         s = """\click on header to sort by that column to change width of column drag boundary"""
